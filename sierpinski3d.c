@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <GL/glut.h>
 typedef GLfloat point[3]; //Three coordinates x, y,z values
-point v[]={{-1.0,-0.5,0.0},{1.0,-0.5,0.0},{0.0,1.0,0.0}, {0.0,0.0,1.0}}; // 4 vertices
-GLfloat colors[4][3]={{1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0},{1.0,1.0,0.0}};//color for four faces of tetrahedron
+point v[]={{-10.0,-5,0.0},{10.0,-5,0.0},{0.0,10.0,0.0}, {0.0,0.0,10.0}}; // 4 vertices
+GLfloat colors[4][3]={{1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,1.0,1.0},{1.0,1.0,0.0}};//color for four faces of tetrahedron
 
 int n;// no of divisions
 
@@ -25,6 +25,13 @@ void tetra(point a,point b,point c,point d) // representation of the tetrahedron
 	triangle(a,d,b); // face-3
 	glColor3fv(colors[3]);
 	triangle(b,d,c); // face-4
+}
+void drawText(int x,int y, char *s){
+	int i=0;
+	glColor3f(1,0,0);
+	glRasterPos2i(x,y);
+	for(i=0;s[i]!='\0';i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,s[i]);
 }
 void divide_tetra(point a,point b,point c,point d,int m) // perform division
 {
@@ -53,6 +60,8 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0,1.0,1.0,1.0);
+	drawText(-8,9,"Name");
+	drawText(-8,8,"Usn");
 	divide_tetra(v[0],v[1],v[2],v[3],n);
 	glFlush();
 }
@@ -62,15 +71,15 @@ void myReshape(int w,int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	if(w<=h)	//glOrtho(-1,1,-1,1,-1,1);
-		glOrtho(-1.0,1.0,-1.0*((GLfloat)h/(GLfloat)w), 1.0*((GLfloat)h/(GLfloat)w),-1.0,1.0);
+		glOrtho(-10.0,10.0,-10.0*((GLfloat)h/(GLfloat)w), 10.0*((GLfloat)h/(GLfloat)w),-10.0,10.0);
 	else//glOrtho(-1,1,-1,1,-1,1);
-		glOrtho(-1.0*((GLfloat)w/(GLfloat)h),1.0*((GLfloat)w/(GLfloat)h),-1.0,1.0,-1.0,1.0);
+		glOrtho(-10.0*((GLfloat)w/(GLfloat)h),10.0*((GLfloat)w/(GLfloat)h),-10.0,10.0,-10.0,10.0);
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
 }
 void main(int argc,char ** argv)
 {
-	printf( "No of Division?: ");
+	printf( "No of Division: ");
 	scanf("%d",&n);
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB|GLUT_DEPTH);

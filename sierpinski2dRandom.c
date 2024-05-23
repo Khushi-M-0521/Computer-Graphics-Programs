@@ -8,34 +8,40 @@ void display()
 	GLfloat p[3]={7.5,5.0,0.0};
 	int j, k;
 	int rand();
-	glClear(GL_COLOR_BUFFER_BIT);
-	glBegin(GL_POINTS);
+	glColor3f(0.0,1.0,0.0);
+	
 	for(k=0;k<n;k++)
-	{ j=rand()%3;
+	{ 	
+		j=rand()%3;
 		p[0]=(p[0]+vertices[j][0])/2;
 		p[1]=(p[1]+vertices[j][1])/2;
+		glBegin(GL_POINTS);
 		glVertex3fv(p);
+		glEnd();
+		glFlush();
 	}
-	glEnd();
-	glFlush();
+	
+	
 }
 void myinit()
-{ glClearColor (1.0, 1.0, 1.0,1.0);
-	glColor3f(0.0,0.0,0.0);
+{ 
+	glClear(GL_COLOR_BUFFER_BIT);	
+	glClearColor (1.0, 1.0, 1.0,1.0);
+	glColor3f(1.0,0.0,0.0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, 60.0, 0.0, 60.0);
+	glOrtho(0.0, 60.0, 0.0, 60.0,-1.0,1.0);
 //glMatrixMode(GL_MODELVIEW);
 }
 int main(int argc, char **argv)
 {
-	printf("Enter the number of divisions\n");
+	printf("Enter the number of divisions: ");
 	scanf("%d",&n);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
 	glutInitWindowSize(500, 500);
 	glutCreateWindow("2D Gasket");
-	glutDisplayFunc(display);
 	myinit();
+	glutDisplayFunc(display);
 	glutMainLoop();
 }

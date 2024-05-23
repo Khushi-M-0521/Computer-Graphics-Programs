@@ -2,13 +2,20 @@
 #include<GL/glut.h>
 int n;
 typedef GLfloat point2[2];
-point2 v[3]= {{-2,-1}, {2,-1},{0,1}};
+point2 v[3]= {{0,1}, {4,1},{2,3}};
 void triangle( GLfloat *a, GLfloat *b, GLfloat *c)
 /* display one triangle */
 {
 	glVertex2fv(a);
 	glVertex2fv(b);
 	glVertex2fv(c);
+}
+void drawText(int x,int y, char *s){
+	int i=0;
+	glColor3f(1,0,1);
+	glRasterPos2i(x,y);
+	for(i=0;s[i]!='\0';i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12,s[i]);
 }
 void divide_triangle(GLfloat *a, GLfloat *b, GLfloat *c, int m)
 {
@@ -30,6 +37,9 @@ void divide_triangle(GLfloat *a, GLfloat *b, GLfloat *c, int m)
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+	drawText(1,3,"Name");
+	drawText(3,3,"Usn");
+	glColor3f(0.0,0.0,1.0);
 	glBegin(GL_TRIANGLES);
 	divide_triangle(v[0], v[1], v[2], n);
 	glEnd();
@@ -39,14 +49,13 @@ void myinit()
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(-2.0, 2.0, -2.0, 2.0);
+	gluOrtho2D(0.0, 4.0, 0.0, 4.0);
 	glMatrixMode(GL_MODELVIEW);
 	glClearColor (1.0, 1.0, 1.0,1.0);
-	glColor3f(1.0,0.0,0.0);
 }
 int main(int argc, char **argv)
 {
-	printf("Enter the number of divisions\n");
+	printf("Enter the number of divisions: ");
 	scanf("%d",&n);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);

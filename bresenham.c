@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<GL/glut.h>
-int x1,y1,x2,y2;
+int x1[10],y1[10],x2[10],y2[10];
+int n;
 void draw_pixel(int x, int y)
 { glColor3f(0.0,0.0,1.0);
 	glPointSize(5);
@@ -8,16 +9,12 @@ void draw_pixel(int x, int y)
 	glVertex2i(x,y);
 	glEnd();
 }
-void Bresenham()
-{ glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(1.0,1.0,1.0,1.0);
-	draw_line(x1,y1,x2,y2);
-	glColor3f(1.0,0.0,0.0);
-	glBegin(GL_LINES);
-	glVertex2i(x1,y1);
-	glVertex2i(x2,y2);
-	glEnd();
-	glFlush();
+void drawText(int x,int y, char *s){
+	int i=0;
+	glColor3f(0,1,0);
+	glRasterPos2i(x,y);
+	for(i=0;s[i]!='\0';i++)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10,s[i]);
 }
 void myinit()
 {
@@ -40,6 +37,9 @@ void draw_line(int x1,int y1, int x2, int y2)
 	incy = 1;
 	if (y2 < y1) incy = -1;
 	x = x1; y = y1;
+	char s[10];
+	sprintf(s,"(%d,%d)",x,y);
+	drawText(x+2,y+1,s);
 	if (dx > dy) //slope lessthan 1
 	{
 		draw_pixel(x, y);
@@ -76,10 +76,35 @@ void draw_line(int x1,int y1, int x2, int y2)
 			draw_pixel(x, y);
 		}
 	}
+	sprintf(s,"(%d,%d)",x,y);
+	drawText(x+2,y+1,s);
+}
+void Bresenham()
+{	
+	int i; 	
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0,0.0,0.0,0.0);
+	drawText(10,90,"USN");
+	drawText(10,95,"Name");
+	for(i=0;i<n;i++){
+		draw_line(x1[i],y1[i],x2[i],y2[i]);
+		glColor3f(0.0,1.0,0.0);
+		glBegin(GL_LINES);
+		glVertex2i(x1[i],y1[i]);
+		glVertex2i(x2[i],y2[i]);
+		glEnd();
+		glFlush();
+	}
 }
 void main(int argc,char ** argv)
-{ printf("Enter the endpoints of the line segment");
-	scanf("%d%d%d%d",&x1,&y1,&x2,&y2);
+{	
+	int i;
+	printf("Enter the number lines: ");
+	scanf("%d",&n); 
+	for(i=0;i<n;i++){
+		printf("Enter the endpoints of the line segment %d: ",(i+1));
+		scanf("%d%d%d%d",&x1[i],&y1[i],&x2[i],&y2[i]);
+	}
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
 	glutInitWindowSize(500,500);
