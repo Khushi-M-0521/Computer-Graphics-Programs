@@ -8,7 +8,7 @@ GLfloat Result[3][3]={{0},{0},{0}};
 GLfloat m=0;
 GLfloat n=0;
 float theta;
-void Triangle()
+void triangle()
 {
 	glColor3f(1.0,0.0,0.0);
 	glBegin(GL_LINE_LOOP);
@@ -20,11 +20,11 @@ void Triangle()
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	Triangle();
+	triangle();
 	glTranslatef(m,n,0);
 	glRotatef(theta,0,0,1);
 	glTranslatef(-m,-n,0);
-	Triangle();
+	triangle();
 	glFlush();
 }
 void myinit()
